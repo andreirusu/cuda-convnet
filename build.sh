@@ -14,10 +14,10 @@
 # (it'll almost certainly be under /usr)
 
 # CUDA toolkit installation directory.
-export CUDA_INSTALL_PATH=/usr/local/cuda
+export CUDA_INSTALL_PATH=/data/andrei/cuda
 
 # CUDA SDK installation directory.
-export CUDA_SDK_PATH=/home/spoon/NVIDIA_GPU_Computing_SDK
+export CUDA_SDK_PATH=/data/andrei/cudasdk
 
 # Python include directory. This should contain the file Python.h, among others.
 export PYTHON_INCLUDE_PATH=/usr/include/python2.7
@@ -27,6 +27,9 @@ export NUMPY_INCLUDE_PATH=/usr/lib/pymodules/python2.7/numpy/core/include/numpy
 
 # ATLAS library directory. This should contain the file libcblas.so, among others.
 export ATLAS_LIB_PATH=/usr/lib/atlas-base
+
+
+export NUMPY_INCLUDE_PATH=/usr/share/pyshared/numpy/core/include/numpy
 
 make $*
 
