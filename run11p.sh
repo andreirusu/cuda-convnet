@@ -25,7 +25,7 @@ SAVE_PATH=../tmp/11p3d
 
 #<<MCMT1
 python shownet.py -f ../tmp/tmp/tmp/tmp/11p3d/ConvNet__2013-07-21_14.02.12   --show-cost=logprob --cost-idx=1 &
-python shownet.py -f ../tmp/tmp/tmp/tmp/11p3d/ConvNet__2013-07-21_14.02.12   --show-filters=conv1 --no-rgb=1 &
+python shownet.py -f ../tmp/tmp/tmp/tmp/11p3d/ConvNet__2013-07-21_14.02.12   --show-filters=conv1 --no-rgb=0 &
 python shownet.py -f ../tmp/tmp/tmp/tmp/11p3d/ConvNet__2013-07-21_14.02.12   --show-filters=conv2 &
 python shownet.py -f ../tmp/tmp/tmp/tmp/11p3d/ConvNet__2013-07-21_14.02.12   --show-filters=local3 &
 python shownet.py -f ../tmp/tmp/tmp/tmp/11p3d/ConvNet__2013-07-21_14.02.12   --show-filters=local4 &
@@ -35,3 +35,4 @@ python shownet.py -f ../tmp/tmp/tmp/tmp/11p3d/ConvNet__2013-07-21_14.02.12   --s
 #MCMT1
 
 
+#python shownet.py -f ../tmp/tmp/tmp/tmp/11p3d/ConvNet__2013-07-21_14.02.12   --show-preds=probs &
