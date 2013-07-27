@@ -179,6 +179,7 @@ class ShowConvNet(ConvNet):
 
         self.make_filter_fig(filters, filter_start, 2, 'Layer %s' % self.show_filters, num_filters, combine_chans)
     
+    
     def plot_predictions(self):
         data = self.get_next_batch(train=False)[2] # get a test batch
         num_classes = self.test_data_provider.get_num_classes()
@@ -233,6 +234,62 @@ class ShowConvNet(ConvNet):
                 pl.xticks([width/2.0, width], ['50%', ''])
                 pl.ylim(0, ylocs[-1] + height*2)
     
+
+    def sample_predictions(self):
+        data = self.get_next_batch(train=False)[2] # get a test batch
+        num_classes = self.test_data_provider.get_num_classes()
+        NUM_ROWS = 2
+        NUM_COLS = 4
+        NUM_IMGS = NUM_ROWS * NUM_COLS
+        NUM_TOP_CLASSES = min(num_classes, 4) # show this many top labels
+        
+        label_names = self.test_data_provider.batch_meta['label_names']
+        if self.only_errors:
+            preds = n.zeros((data[0].shape[1], num_classes), dtype=n.single)
+        else:
+            preds = n.zeros((NUM_IMGS, num_classes), dtype=n.single)
+            rand_idx = nr.randint(0, data[0].shape[1], NUM_IMGS)
+            data[0] = n.require(data[0][:,rand_idx], requirements='C')
+            data[1] = n.require(data[1][:,rand_idx], requirements='C')
+        data += [preds]
+
+        # Run the model
+        self.libmodel.startFeatureWriter(data, self.sotmax_idx)
+        self.finish_batch()
+        
+        fig = pl.figure(3)
+        fig.text(.4, .95, '%s test case predictions' % ('Mistaken' if self.only_errors else 'Random'))
+        if self.only_errors:
+            err_idx = nr.permutation(n.where(preds.argmax(axis=1) != data[1][0,:])[0])[:NUM_IMGS] # what the net got wrong
+            data[0], data[1], preds = data[0][:,err_idx], data[1][:,err_idx], preds[err_idx,:]
+            
+        data[0] = self.test_data_provider.get_plottable_data(data[0])
+        for r in xrange(NUM_ROWS):
+            for c in xrange(NUM_COLS):
+                img_idx = r * NUM_COLS + c
+                if data[0].shape[0] <= img_idx:
+                    break
+                pl.subplot(NUM_ROWS*2, NUM_COLS, r * 2 * NUM_COLS + c + 1)
+                pl.xticks([])
+                pl.yticks([])
+                img = data[0][img_idx,:,:,:]
+                pl.imshow(img, interpolation='nearest')
+                true_label = int(data[1][0,img_idx])
+
+                img_labels = sorted(zip(preds[img_idx,:], label_names), key=lambda x: x[0])[-NUM_TOP_CLASSES:]
+                pl.subplot(NUM_ROWS*2, NUM_COLS, (r * 2 + 1) * NUM_COLS + c + 1, aspect='equal')
+
+                ylocs = n.array(range(NUM_TOP_CLASSES)) + 0.5
+                height = 0.5
+                width = max(ylocs)
+                pl.barh(ylocs, [l[0]*width for l in img_labels], height=height, \
+                        color=['r' if l[1] == label_names[true_label] else 'b' for l in img_labels])
+                pl.title(label_names[true_label])
+                pl.yticks(ylocs + height/2, [l[1] for l in img_labels])
+                pl.xticks([width/2.0, width], ['50%', ''])
+                pl.ylim(0, ylocs[-1] + height*2)
+   
+
     def do_write_features(self):
         if not os.path.exists(self.feature_path):
             os.makedirs(self.feature_path)
@@ -264,6 +321,8 @@ class ShowConvNet(ConvNet):
             self.plot_filters()
         if self.show_preds:
             self.plot_predictions()
+        if self.sample_preds:
+            self.sample_predictions()
         if self.write_features:
             self.do_write_features()
         pl.show()
