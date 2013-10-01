@@ -14,10 +14,10 @@
 # (it'll almost certainly be under /usr)
 
 # CUDA toolkit installation directory.
-export CUDA_INSTALL_PATH=/data/andrei/cuda
+export CUDA_INSTALL_PATH=/Users/andreirusu/funspace/cuda
 
 # CUDA SDK installation directory.
-export CUDA_SDK_PATH=/data/andrei/cudasdk
+export CUDA_SDK_PATH=/Users/andreirusu/funspace/cudasdk
 
 # Python include directory. This should contain the file Python.h, among others.
 export PYTHON_INCLUDE_PATH=/usr/include/python2.7

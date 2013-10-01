@@ -173,6 +173,7 @@ class ConvNet(IGPUModel):
     def get_options_parser(cls):
         op = IGPUModel.get_options_parser()
         op.add_option("mini", "minibatch_size", IntegerOptionParser, "Minibatch size", default=128)
+        op.add_option("seed", "seed", IntegerOptionParser, "Random seed", default=1)
         op.add_option("layer-def", "layer_def", StringOptionParser, "Layer definition file", set_once=True)
         op.add_option("layer-params", "layer_params", StringOptionParser, "Layer parameter file")
         op.add_option("check-grads", "check_grads", BooleanOptionParser, "Check gradients and quit?", default=0, excuses=['data_path','save_path','train_batch_range','test_batch_range'])
@@ -196,9 +197,10 @@ class ConvNet(IGPUModel):
         return op
     
 if __name__ == "__main__":
-    #nr.seed(5)
     op = ConvNet.get_options_parser()
 
     op, load_dic = IGPUModel.parse_options(op)
+    nr.seed(op.get_value('seed'))
     model = ConvNet(op, load_dic)
     model.start()
+
