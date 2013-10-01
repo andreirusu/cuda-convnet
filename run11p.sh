@@ -11,6 +11,9 @@ fi
 export PATH=/data/andrei/cuda/bin:$PATH 
 export LD_LIBRARY_PATH=/data/andrei/cuda/lib64:$LD_LIBRARY_PATH 
 
+echo "PATH: $PATH"
+echo "LD_LIBRARY_PATH: $LD_LIBRARY_PATH"
+
 SAVE_PATH=../tmp/11p3d
 
 ### First train until convergence on batches 1-4 and validate on 5th, for about 350 epochs 
@@ -26,7 +29,7 @@ SAVE_PATH=../tmp/11p3d
 #time python convnet.py -f ../tmp/tmp/tmp/11p3d/ConvNet__2013-07-21_14.02.12 --data-path=/Users/andreirusu/funspace/cifar-10-py-colmajor --save-path=/Users/andreirusu/funspace/tmp/11p --test-range=6 --train-range=1-5 --data-provider=cifar-cropped --test-freq=5 --layer-params=/Users/andreirusu/funspace/cuda-convnet/example-layers/layer-params-conv-local-11pct-3d.cfg --epochs 520 --gpu $GPU_ID
 
 ### TEST => 0.1111 error; accuracy > 88% 
-#time python convnet.py -f ../tmp/tmp/tmp/tmp/11p3d/ConvNet__2013-07-21_14.02.12 --logreg-name=logprob --data-path=/Users/andreirusu/funspace/cifar-10-py-colmajor --test-only=1 --multiview-test=1 --test-range=6 --data-provider=cifar-cropped --gpu $GPU_ID
+time python convnet.py -f ../tmp/tmp/tmp/tmp/11p3d/ConvNet__2013-07-21_14.02.12 --logreg-name=logprob --data-path=/Users/andreirusu/funspace/cifar-10-py-colmajor --test-only=1 --multiview-test=1 --test-range=6 --data-provider=cifar-cropped --gpu $GPU_ID
 
 
 ### SHOW NET
@@ -42,5 +45,5 @@ python shownet.py --gpu $GPU_ID -f ../tmp/tmp/tmp/tmp/11p3d/ConvNet__2013-07-21_
 python shownet.py --gpu $GPU_ID -f ../tmp/tmp/tmp/tmp/11p3d/ConvNet__2013-07-21_14.02.12   --show-preds=probs &
 MCMT1
 
-python shownet.py -f ../tmp/tmp/tmp/tmp/11p3d/ConvNet__2013-07-21_14.02.12   --sample-preds=probs &
+#python shownet.py -f ../tmp/tmp/tmp/tmp/11p3d/ConvNet__2013-07-21_14.02.12   --sample-preds=probs &
 
