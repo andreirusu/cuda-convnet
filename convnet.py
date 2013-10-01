@@ -200,7 +200,7 @@ if __name__ == "__main__":
     op = ConvNet.get_options_parser()
 
     op, load_dic = IGPUModel.parse_options(op)
-    nr.seed(op.seed)
+    nr.seed(op.get_value('seed'))
     model = ConvNet(op, load_dic)
     model.start()
 
